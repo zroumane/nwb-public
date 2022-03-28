@@ -1,0 +1,8 @@
+{
+    "symfony/password-hasher": {
+        "version": "v5.3.4"
+    },
+    "symfony/runtime": {
+        "version": "v5.3.4"
+    }
+}

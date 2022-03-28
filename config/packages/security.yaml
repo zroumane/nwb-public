@@ -1,0 +1,28 @@
+security:
+    encoders:
+        App\Entity\User:
+            algorithm: bcrypt
+            cost: 12
+    providers:
+        app_user_provider:
+            entity:
+                class: App\Entity\User
+                property: email
+    firewalls:
+        dev:
+            pattern: ^/(_(profiler|wdt)|css|images|js)/
+            security: false
+        main:
+            form_login:
+            anonymous: true
+            lazy: true
+            provider: app_user_provider
+            guard:
+                authenticators:
+                    - App\Security\AppAuthenticator
+            logout:
+                path: app_security_logout
+            remember_me:
+                secret:   '%kernel.secret%'
+    access_control:
+        - { path: ^/(%app_locales%)/admin, roles: ROLE_ADMIN }

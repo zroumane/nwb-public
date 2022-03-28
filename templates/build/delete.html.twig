@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+	{{ "<title>#{build.name}</title>"|spaceless }}
+{% endblock %}
+
+{% block body %}
+    <div class="h2">{% trans %}build.actions.confirm{% endtrans %}</div>
+    <form method="post" action="{{ path('app_builds_confirm_delete', {'id': build.id}) }}">
+        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ build.id) }}">
+        <button class="btn btn-sm btn-danger" type="submit">{% trans %}build.actions.delete{% endtrans %}</button>
+    </form>
+{% endblock %}

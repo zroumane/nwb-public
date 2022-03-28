@@ -1,0 +1,15 @@
+<h3>Welcome to NewWorld-Builder {{ pseudo }} !</h3>
+
+<p>
+  You signed up with the email : <code>{{ email.to[0].address }}</code>
+</p>
+
+<p>
+  <a href="{{ signedUrl|raw }}">Click here to comfirm your registration</a>
+  (this link is valid until {{ expiresAtMessageKey|trans(expiresAtMessageData, 'VerifyEmailBundle') }})
+</p>
+
+<p>
+  Cordially,
+  - <a href="NewWorld-Builder.com">NewWorld-Builder.com</a> Team
+</p>

@@ -1,0 +1,18 @@
+/var/
+/vendor/
+/.idea/
+/.vscode/
+/cdn/
+/public/img
+/public/json
+translations
+phpunit.xml.dist
+###> symfony/webpack-encore-bundle ###
+/node_modules/
+/public/dist/
+npm-debug.log
+yarn-error.log
+###< symfony/webpack-encore-bundle ###
+todo.txt
+.env*
+*.sql

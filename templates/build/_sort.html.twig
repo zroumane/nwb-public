@@ -1,0 +1,14 @@
+<a class="sort-link" {% for attr, value in options %} {{ attr }}="{{ value }}" {% endfor %}>
+	<span class="float-right">
+		{% if sorted %}
+			{% if direction == 'desc' %}
+				<i>▲</i>
+			{% else %}
+				<i>▼</i>
+			{% endif %}
+		{% else %}
+			<i></i>
+		{% endif %}
+	</span>
+	{{ title }}
+</a>

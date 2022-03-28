@@ -1,0 +1,20 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+	<h2 class="mb-3">
+		Admin Dashboard :
+	</h2>
+
+	<ul>
+		<li class="h4 my-2">
+			<a href="{{ path('app_builds_weapon') }}">Weapon</a>
+		</li>
+		<li class="h4 my-2">
+			<a href="{{ path('app_craft_admin') }}">Craft</a>
+		</li>
+		<li class="h4 my-2">
+			<a href="https://analytics.newworld-builder.com/">Analytics</a>
+		</li>
+	</ul>
+
+{% endblock %}

@@ -1,0 +1,52 @@
+.carBonus{
+  padding: 0;
+  width: 45px;
+  outline: none;
+}
+
+.carBonusRemove, .carBonusAdd{
+  width: 40px;
+}
+
+/** Progress Skill Point */
+
+.pointProgress {
+  height: 40px;
+  background-color: white;
+  border: 3px white solid;
+  border-radius: 0.2rem;
+}
+
+.pointProgressText {
+  color: black;
+  height: 100%;
+}
+
+.pointProgressBar {
+  width: 100%;
+  background-color: #ffc107;
+  border-radius: 0.2rem;
+}
+
+/** Actived Skill*/
+
+.activedSkill {
+  cursor: pointer;
+}
+
+.activedSkillSelected {
+  cursor: auto;
+}
+
+.activedSkillDelete {
+  box-shadow: -1px 0px 9px 1px rgba(0, 0, 0, 1);
+  -webkit-box-shadow: -1px 0px 9px 1px rgba(0, 0, 0, 1);
+  -moz-box-shadow: -1px 0px 9px 1px rgba(0, 0, 0, 1);
+  border-radius: 50%;
+  width: 10px;
+  cursor: pointer;
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  z-index: 10;
+}

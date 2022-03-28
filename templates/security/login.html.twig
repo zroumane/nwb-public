@@ -1,0 +1,89 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+  {% if app.user %}
+
+	<h3 class="mb-2">{% trans with {'%pseudo%' : app.user.pseudo} %}login.loged{% endtrans %}</h3>
+	<h3><a class="link-danger" href="{{ path('app_security_logout') }}">{% trans %}navbar.logout{% endtrans %}</a></h3>
+
+  {% else %}
+    <div class="row p-2">
+      <div class="col-lg m-lg-1 mb-4">
+        <form method="post" class="border rounded p-2">
+          <h1 class="p-1">
+            {% trans %}login.login{% endtrans %}
+          </h1>
+
+          {% if error and error.messageKey != 'login.verify.nocheck' %}
+            <div class="px-2">
+              <div class="alert alert-danger m-0 my-1">
+                {{ error.messageKey|trans }}
+              </div>
+            </div>
+          {% endif %}
+
+          <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}"/>
+
+          <div class="p-2">
+            <label for="inputEmail">{% trans %}login.email{% endtrans %}</label>
+            <input type="email" value="{{ last_username }}" name="email" id="inputEmail" class="form-control" required="required" autofocus="autofocus"/>
+          </div>
+
+          <div class="p-2">
+            <label for="inputPassword">
+              {% trans %}login.password{% endtrans %}
+            </label>
+            <input type="password" name="password" id="inputPassword" class="form-control mb-1" required="required"/>
+            <a href="{{ path('app_password_forgot') }}">
+              {% trans %}password.resetpass{% endtrans %}
+            </a>
+          </div>
+
+          <div class="p-2">
+            <input class="form-check-input" type="checkbox" id="flexCheckDefault" name="_remember_me"/>
+            <label class="form-check-label" for="flexCheckDefault">
+              {% trans %}login.remember{% endtrans %}
+            </label><br>
+          </div>
+
+
+          <div class="p-2 mb-2">
+            <button class="btn btn-lg btn-outline-light" type="submit">
+              {% trans %}login.gologin{% endtrans %}
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <div class="col-lg m-lg-1">
+        {{form_start(registrationForm,{attr: {class: 'border rounded p-2'}})}}
+
+          <h1 class="p-1">
+            {% trans %}login.register{% endtrans %}
+          </h1>
+
+          <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}"/>
+
+          <div class="p-2">
+            {{ form_row(registrationForm.pseudo) }}
+          </div>
+
+          <div class="p-2">
+            {{ form_row(registrationForm.email) }}
+          </div>
+
+          <div class="p-2">
+            {{ form_row(registrationForm.plainPassword) }}
+          </div>
+
+          <div class="p-2 my-2">
+            <button class="btn btn-lg btn-outline-light" type="submit">
+              {% trans %}login.goregister{% endtrans %}
+            </button>
+          </div>
+
+        {{ form_end(registrationForm) }}
+      </div>
+    </div>
+  {% endif %}
+{% endblock %}

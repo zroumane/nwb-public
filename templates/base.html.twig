@@ -1,0 +1,190 @@
+{% set locale = app.request.locale %}
+{% set route = app.request.attributes.get('_route') %}
+{% set route_params = app.request.attributes.get('_route_params') %}
+{% set params = route_params|merge(app.request.query) %}
+{% set pathname = app.request.pathinfo|split('/') %}
+
+{% if pathname[2] == 'build' or not pathname[2] %}
+	{% set current_menu = 'builds' %}
+{% elseif pathname[2] == 'create' %}
+	{% set current_menu = 'create' %}
+{% elseif pathname[2] == 'login' %}
+	{% set current_menu = 'login' %}
+{% elseif pathname[2] == 'craft' %}
+	{% set current_menu = 'craft' %}
+{% elseif pathname[2] == 'profile' %}
+	{% set current_menu = 'profile' %}
+{% else %}
+	{% set current_menu = '' %}
+{% endif %}
+
+<!DOCTYPE html>
+<html lang="{{ locale }}">
+
+	<head>
+		<meta charset="UTF-8"> {% apply spaceless %}
+		{% block robots %}{% endblock %}
+		{% block title %}
+			<title>{% trans %}meta.title{% endtrans %}</title>
+		{% endblock %}
+		{% endapply %} <meta name="keywords" locale="{{ locale }}" content="build, create, craft, newworld, new, world, amazon games, mmo"/>
+		{% block description %}
+			<meta name="description" content="{% trans %}meta.description{% endtrans %}"/>
+		{% endblock %}
+		<link rel="shortcut icon" href="{{asset('/img/favicon.ico')}}"/> {{ encore_entry_link_tags('App') }}
+		{% block stylesheets %}{% endblock %}
+		{{ encore_entry_script_tags('App') }}
+		{% block javascripts %}{% endblock %}
+
+	{% if app.environment != 'dev' %}
+		
+		<!-- Matomo -->
+		<script>
+			var _paq = window._paq = window._paq || [];
+/* tracker methods like "setCustomDimension" should be called before "trackPageView" */
+_paq.push(['trackPageView']);
+_paq.push(['enableLinkTracking']);
+(function () {
+var u = "//analytics.newworld-builder.com/";
+_paq.push([
+'setTrackerUrl',
+u + 'matomo.php'
+]);
+_paq.push(['setSiteId', '1']);
+var d = document,
+g = d.createElement('script'),
+s = d.getElementsByTagName('script')[0];
+g.async = true;
+g.src = u + 'matomo.js';
+s.parentNode.insertBefore(g, s);
+})();
+		</script>
+		<!-- End Matomo Code -->
+		
+	{% endif %}
+
+	</head>
+
+	<body>
+
+		<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+			<div class="container-lg justify-content-start">
+				<a class="navbar-brand position-relative flex-lg-grow-0" href="{{path('app_builds_index')}}">
+					<img src="{{asset('/img/nwicone.png')}}" alt="" width="100" height="100">
+				</a>
+				<div class="d-lg-none d-block flex-grow-1"></div>
+				<ul class="navbar-nav d-flex flex-row p-0 m-0 justify-content-end align-items-center me-3">
+					<li class="d-lg-none d-block dropdown">
+						{% include "meta/_profile.dropdown.html.twig" %}
+					</li>
+					<li class="d-lg-none d-block dropdown">
+						{% include "meta/_locale.html.twig" %}
+					</li>
+				</ul>
+				<button
+					class="navbar-toggler"
+					type="button"
+					data-bs-toggle="collapse"
+					data-bs-target="#navbarTogglerDemo02"
+					aria-controls="navbarTogglerDemo02"
+					aria-expanded="false">
+					<span class="navbar-toggler-icon"></span>
+				</button>
+				<div class="collapse navbar-collapse mt-4 mt-lg-0" id="navbarTogglerDemo02">
+					<ul class="navbar-nav me-auto mb-2 mb-lg-0">
+						<li class="nav-item">
+							<a class="nav-link {% if current_menu == 'builds' %}active{% endif %}" href="{{path('app_builds_index')}}">
+								<h3>{% trans %}navbar.build{% endtrans %}</h3>
+							</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link {% if current_menu == 'create' %}active{% endif %}" href="{{path('app_builds_create')}}">
+								<h3>{% trans %}navbar.create{% endtrans %}</h3>
+							</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link {% if current_menu == 'profile' %}active{% endif %}" href="{{path('app_profile_index')}}">
+								<h3>{% trans %}navbar.mybuild{% endtrans %}</h3>
+							</a>
+						</li>
+					</ul>
+					<ul class="navbar-nav">
+						<li class="d-lg-block d-none nav-item dropdown mx-2 px-0">
+							{% include "meta/_profile.dropdown.html.twig" %}
+						</li>
+						<li class="d-lg-block d-none nav-item dropdown mx-2 px-0">
+							{% include "meta/_locale.html.twig" %}
+						</li>
+					</ul>
+				</div>
+			</div>
+		</nav>
+
+		<div class="text-light container-lg mt-4 mb-4">
+
+			<div>
+
+				{% if app.flashes('verify_warning') %}
+					<div class="alert alert-warning mx-2 my-1 mb-3" role="alert">
+						{% trans %}login.verify.nocheck{% endtrans %}
+					</div>
+				{% endif %}
+
+				{% if app.flashes('verify_succes') %}
+					<div class="alert alert-success mx-2 my-1 mb-3" role="alert">
+						{% trans %}login.verify.check{% endtrans %}
+					</div>
+				{% endif %}
+
+				{% for flashError in app.flashes('verify_error') %}
+					<div class="alert alert-danger mx-2 my-1 mb-3" role="alert">{{ flashError|trans }}</div>
+				{% endfor %}
+
+				{% if error.messageKey is defined %}
+
+					{% if error.messageKey == 'login.incorrect' %}
+						<div class="px-2">
+							<div class="alert alert-danger m-0 my-1" mb-3="mb-3">{{ error.messageKey|trans }}</div>
+						</div>
+					{% endif %}
+
+					{% if error.messageKey == 'login.verify.nocheck' %}
+						<div class="alert alert-warning mx-2 my-1 mb-3" role="alert">
+							{% trans %}login.verify.nocheck{% endtrans %}
+							{% trans %}login.verify.noreceive{% endtrans %}.
+						</div>
+					{% endif %}
+
+				{% endif %}
+
+			</div>
+
+			{% block body %}{% endblock %}
+		</div>
+
+		<div class="container-fluid bg-dark text-light">
+			<div class="container-lg p-3">
+				<div class="text-center fs-6">
+					<span>{% trans %}meta.feedback{% endtrans %}</span>
+					{% apply spaceless %}
+					<a target="_blank" href="https://discord.gg/qYjG93TS8C">
+						<img class="discord rounded" src="{{asset('img/discord.png')}}" alt="discord">
+					</a>
+					{% endapply %}
+					<span>!</span>
+				</div>
+				<div class="text-center text-secondary fs-6">
+					© {{ "now"|date("Y") }}
+					<a href="https://newworld-builder.com/">NewWorld-Builder.com</a>
+					- {% trans %}meta.footer{% endtrans %}
+				</div>
+				<div class="text-white text-center mt-1 fs-6">
+					<a class="mx-2 link-light text-decoration-none" href="{{path('app_meta_contact')}}">Contact</a>
+					<a class="mx-2 link-light text-decoration-none" href="https://discord.gg/qYjG93TS8C" target="_blank">Discord</a>
+					<a class="mx-2 link-light text-decoration-none" href="{{path('app_meta_privacy')}}">Privacy Policy</a>
+					<a class="mx-2 link-light text-decoration-none" href="{{path('app_builds_index')}}">Front Page</a>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>

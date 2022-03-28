@@ -1,0 +1,116 @@
+.carArrow,
+.carBonusRemove,
+.carBonusAdd {
+  letter-spacing: -4px;
+  cursor: pointer;
+}
+
+.noSelect {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.carProgressDiv {
+  height: 18px;
+  border-radius: 10px !important;
+}
+
+.carCapDiv {
+  top: -4px;
+  bottom: -4px;
+  left: -10px;
+  right: -10px;
+}
+
+.carCap {
+  height: 26px;
+  width: 26px;
+  border: 1px black solid;
+  background-color: white;
+  z-index: 100;
+}
+
+.rightborder {
+  border-right: 1px white solid;
+}
+
+nav button {
+  color: white;
+  border: 1px white solid;
+}
+
+.buildTab {
+  color: white;
+  cursor: pointer;
+
+  &:hover {
+    color: white;
+    outline: #faf8f4 1px solid;
+    outline-offset: -1px;
+  }
+
+  &.active {
+    background-color: #676768 !important;
+  }
+}
+
+#side-1 {
+  border-right: 0.5px white solid;
+  padding-right: 0.5rem;
+}
+
+#side-2 {
+  border-left: 0.5px white solid;
+  padding-left: 0.5rem;
+}
+
+.svgContainer {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+}
+
+.skillLine {
+  stroke: #fff;
+  stroke-width: 2;
+}
+
+/** Cadre Skill */
+
+.skill-container,
+.skill-container-icon {
+  cursor: pointer;
+  background-position: center;
+  background-size: 100%, 100%;
+  background-repeat: no-repeat;
+  z-index: 10;
+}
+
+/** Actived Skill*/
+
+.activedSkillbtn::after {
+  display: none !important;
+}
+.activedSkillbtn,
+.activedSkillbtn:focus {
+  outline: 0;
+  box-shadow: inherit;
+}
+
+.activedSkillList {
+  width: 100%;
+  max-width: inherit;
+  min-width: inherit;
+}
+
+.activedSkill,
+.activedSkillSelected {
+  background-size: 100% 100%;
+  background-position: center;
+}

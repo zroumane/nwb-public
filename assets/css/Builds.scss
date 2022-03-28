@@ -1,0 +1,29 @@
+@import "~bootstrap/scss/bootstrap";
+
+.sort-link {
+  text-decoration: none;
+}
+
+.page-link,
+.page-item.disabled .page-link {
+  border: none;
+  background-color: #212529;
+}
+
+.page-link:hover {
+  background-color: #343a40;
+}
+
+ul.pagination {
+  margin: 0;
+}
+
+#allWeaponText {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+#allWeaponCheck {
+  width: max-content;
+}

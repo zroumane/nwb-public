@@ -1,0 +1,13 @@
+knp_paginator:
+    page_range: 20 
+    default_options:
+        page_name: p
+        sort_field_name: s
+        sort_direction_name: d 
+        distinct: true
+        filter_field_name: filterField  # filter field query parameter name
+        filter_value_name: filterValue  # filter value query parameter name
+    template:
+        pagination: '@KnpPaginator/Pagination/twitter_bootstrap_v4_pagination.html.twig'     # sliding pagination controls template
+        sortable: 'build/_sort.html.twig' # sort link template
+        filtration: '@KnpPaginator/Pagination/filtration.html.twig'  # filters template

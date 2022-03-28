@@ -1,0 +1,61 @@
+#weaponForm,
+#skillForm {
+  border: 1px white solid;
+  padding: 0.5rem;
+}
+
+.api-form div input,
+select {
+  width: 100%;
+  height: 100%;
+}
+
+.isHidden {
+  display: none;
+}
+
+.svgContainer {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+}
+
+.skillLine {
+  stroke: #fff;
+  stroke-width: 2;
+}
+
+.skill-container,
+.skill-container-icon {
+  outline-offset: -2px;
+  background-position: center;
+  background-repeat: no-repeat;
+  z-index: 10;
+  opacity: 0.9;
+}
+
+input[type="color"] {
+  border: 0;
+  appearance: none;
+  padding: 0;
+  width: 30px;
+  margin-right: 10px;
+}
+
+#skillFormParent {
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+}
+
+#skillFormParentDelete {
+  box-shadow: -1px 0px 9px 1px rgba(0, 0, 0, 1);
+  -webkit-box-shadow: -1px 0px 9px 1px rgba(0, 0, 0, 1);
+  -moz-box-shadow: -1px 0px 9px 1px rgba(0, 0, 0, 1);
+  border-radius: 50%;
+  width: 12px;
+  cursor: pointer;
+  position: absolute;
+  top: 5px;
+  right: 5px;
+}

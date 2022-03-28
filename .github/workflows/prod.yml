@@ -1,0 +1,33 @@
+on:
+  release:
+    types: [published]
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Rsync Upload
+        uses: Pendect/action-rsyncer@v1.1.0
+        env:
+          DEPLOY_KEY: ${{secrets.DEPLOY_SSH_KEY}}
+          USER: ${{secrets.USER}}
+          HOST: ${{secrets.HOST}}
+        with:
+          flags: "-av --delete"
+          options: "--exclude-from=exclude"
+          src: "./"
+          dest: "$USER@$HOST:~/nwb-prod/"
+      - name: Composer Setup
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{secrets.HOST}}
+          username: ${{secrets.USER}}
+          key: ${{secrets.DEPLOY_SSH_KEY}}
+          script: |
+            cd ~/nwb-prod/
+            composer update --no-dev
+            composer dump-env prod
+            yarn install
+            yarn run build
+            php bin/console doctrine:migration:migrate
+            php bin/console cache:clear

@@ -1,0 +1,23 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+<div class="row p-2">
+  {{form_start(resetForm,{attr: {class: 'border rounded p-2 col-lg-6 col mx-auto'}})}}
+
+    <h2 class="p-1">
+      {% trans %}password.reset.title{% endtrans %}
+    </h2>
+
+    <div class="p-2">
+      {{ form_row(resetForm.plainPassword) }}
+    </div>
+
+    <div class="p-2 mb-2">
+      <button class="btn btn-lg btn-outline-light">{% trans %}password.reset.reset{% endtrans %}</button>
+    </div>
+
+  {{ form_end(resetForm) }}
+</div>
+
+{% endblock %}

@@ -1,0 +1,19 @@
+{% set locales = ["de", "en", "es", "fr", "it", "pl", "pt"] %}
+
+<a class="nav-link dropdown-toggle fs-4" id="localeDrowpdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+	<img src="{{ asset("/img/flag/#{locale}.svg") }}" class="flag flag-border">
+</a>
+<ul class="dropdown-menu position-absolute" aria-labelledby="localeDrowpdown">
+	{% for l in locales %}
+		<a class="dropdown-item" href="{{ path(route, params|merge({ _locale: l })) }}">
+			<div class="row">
+				<div class="col">
+					<h6 class="flex-fill">{{ "locales.#{l}"|trans([], 'messages', 'global') }}</h6>
+				</div>
+				<div class="col-4 ps-0">
+					<img src="{{ asset("/img/flag/#{l}.svg") }}" class="w-100 flag-border">
+				</div>
+			</div>
+		</a>
+	{% endfor %}
+</ul>

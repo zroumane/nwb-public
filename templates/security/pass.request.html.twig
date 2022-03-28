@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+	{% if send == true %}
+		<div class="px-2 mb-4">
+			<div class="alert alert-success m-0 my-1">
+				{% trans %}password.request.issend{% endtrans %}
+				{% trans %}password.verify.noreceive{% endtrans %}
+				<a href="{{ path('app_password_forgot') }}">{% trans %}password.request.tryagain{% endtrans %}</a>.
+			</div>
+		</div>
+	{% endif %}
+
+	{% for flashError in app.flashes('reset_password_error') %}
+		<div class="alert alert-danger" role="alert">{{ flashError }}</div>
+	{% endfor %}
+
+	{{ form_start(requestForm, {attr: {class: 'border rounded p-2 col-lg-6 col mx-auto'}}) }}
+
+	<h2 class="p-1">
+		{% trans %}password.reset.title{% endtrans %}
+	</h2>
+
+	<h5 class="m-2">
+		{% trans %}password.request.description{% endtrans %}
+	</h5>
+
+	<div class="p-2">
+		{{ form_row(requestForm.email) }}
+	</div>
+
+	<div class="p-2 mb-2">
+		<button class="btn btn-lg btn-outline-light">{% trans %}password.request.send{% endtrans %}</button>
+	</div>
+
+	{{ form_end(requestForm) }}
+
+
+{% endblock %}

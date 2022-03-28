@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+	{{ parent() }}
+	{{ encore_entry_link_tags('Builds') }}
+{% endblock %}
+
+{% block javascripts %}
+	{{ parent() }}
+	{{ encore_entry_script_tags('Builds') }}
+{% endblock %}
+
+
+{% block body %}
+
+
+	<input type="hidden" id="userId" value="{{ user.id }}">
+
+	<h3 class=" mb-2">
+		{% trans with {'%pseudo%': user.pseudo} %}profile.title{% endtrans %} :
+	</h3>
+
+	{% include "build/_table.html.twig" %}
+
+
+{% endblock %}

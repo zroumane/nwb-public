@@ -1,0 +1,62 @@
+$popover-bg: rgb(24, 24, 24) !default;
+$popover-header-bg: rgb(14, 14, 14);
+$popover-header-color: white;
+$popover-body-color: white;
+$popover-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2) !default;
+$popover-arrow-color: $popover-bg;
+$popover-border-color: rgb(65, 65, 65);
+
+@import "~bootstrap/scss/bootstrap";
+
+*::-webkit-scrollbar {
+  width: 10px;
+}
+
+*::-webkit-scrollbar-track {
+  background: rgb(114, 114, 114);
+}
+
+*::-webkit-scrollbar-thumb {
+  background: rgb(56, 56, 56);
+}
+
+*::-webkit-scrollbar-thumb:hover {
+  background: rgb(36, 36, 36);
+}
+
+*::-webkit-scrollbar-thumb:active {
+  background: rgb(24, 24, 24);
+}
+
+body {
+  padding: 0;
+  background: rgb(41, 40, 38);
+  background: linear-gradient(180deg, rgba(41, 40, 38, 1) 80%, rgb(61, 54, 46) 100%);
+
+  min-height: 100vh;
+  margin: 0;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+}
+
+.navbar-nav > li {
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+.navbar-nav .dropdown-menu {
+  position: absolute;
+}
+
+.flag {
+  width: 45px;
+  height: 30px;
+}
+
+.flag-border {
+  border: rgb(94, 94, 94) solid 1px;
+}
+
+.discord {
+  height: 30px;
+}

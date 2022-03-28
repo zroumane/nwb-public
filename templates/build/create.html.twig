@@ -1,0 +1,246 @@
+{% extends "base.html.twig" %}
+
+{% block stylesheets %}
+	{{ parent() }}
+	{{ encore_entry_link_tags('CreateBuild') }}
+{% endblock %}
+
+{% block javascripts %}
+	{{ parent() }}
+	{{ encore_entry_script_tags('CreateBuild') }}
+{% endblock %}
+{% block body %}
+
+	{% if not app.user %}
+		<div class="alert alert-warning">
+			{% trans %}create.nouser{% endtrans %}
+		</div>
+	{% endif %}
+
+	<div class="row py-2" novalidate>
+
+		{% if build is defined %}
+			<input type="hidden" id="buildId" value="{{build.id}}">
+		{% endif %}
+
+		<div class="col-9">
+			<label class="form-label">{% trans %}create.name.label{% endtrans %}</label>
+			<input autocomplete="off" minlength="8" type="text" class="form-control" id="formBuildName" {% if build is defined %} value="{{build.name}}" {% endif %}>
+			<div id="formBuildNameInvalid" class="d-none text-danger">
+				{% trans %}create.name.invalid{% endtrans %}
+			</div>
+		</div>
+
+		<div class="col-3">
+			<label class="form-label">{% trans %}type.label{% endtrans %}</label>
+			<select autocomplete="off" class="form-select" id="formBuildType">
+				<option value="1" {% if build is defined and build.type == 1 %} selected {% elseif build is not defined %} selected {% endif %}>{% trans %}type.general{% endtrans %}</option>
+				<option value="2" {% if build is defined and build.type == 2 %} selected {% endif %}>PVP</option>
+				<option value="3" {% if build is defined and build.type == 3 %} selected {% endif %}>PVE</option>
+				<option value="4" {% if build is defined and build.type == 4 %} selected {% endif %}>PVX</option>
+				<option value="5" {% if build is defined and build.type == 5 %} selected {% endif %}>{% trans %}type.war{% endtrans %}</option>
+			</select>
+		</div>
+	</div>
+	<div class="py-2">
+		<label class="form-label">{% trans %}create.description.label{% endtrans %}</label>
+
+
+		{% if build is defined %}
+			{% autoescape false %}
+				{{ "<textarea id='formBuildDesc' style='height:200px' autocomplete='off' class='form-control' id='formBuildDesc'>#{build.description|raw}</textarea>" }}
+			{% endautoescape %}
+		{% else %}
+			{{ "<textarea id='formBuildDesc' style='height:200px' autocomplete='off' class='form-control' id='formBuildDesc'></textarea>" }}
+		{% endif %}
+
+
+		<div id="formBuildDescInvalid" class="d-none text-danger">
+			{% trans %}create.description.invalid{% endtrans %}
+		</div>
+	</div>
+
+	<div class="py-3">
+		<div class="row text-center">
+			<div class="col-2">
+				<h4>{% trans %}characteristic.point{% endtrans %}</h4>
+			</div>
+			<div class="col-2">
+				<h4>{% trans %}characteristic.stuff{% endtrans %}</h4>
+			</div>
+			<div class="col">
+				<h4>{% trans %}characteristic.label{% endtrans %}</h4>
+			</div>
+		</div>
+		{% set carKey = ['Str', 'Dex', 'Int', 'Foc', 'Con'] %}
+		{% for car in 1..5 %}
+			<div class="row">
+				<div class="col-2 rightborder align-bottom noSelect text-center pt-3 d-flex justify-content-evenly">
+					<span class="align-self-center remove5points h5 carArrow">&lt&lt</span>
+					<span class="align-self-center remove1point h5 carArrow">&lt</span>
+					<span class="align-self-center carPointText h3">5</span>
+					<span class="align-self-center add1point h5 carArrow">&gt</span>
+					<span class="align-self-center add5points h5 carArrow">&gt&gt</span>
+				</div>
+				<div class="col-2 d-flex justify-content-center flex-nowrap rightborder noSelect pt-3 ">
+					<button type="button" class="btn btn-outline-primary h5 carBonusRemove">-</button>
+					<input autocomplete="off" old="0" type="text" class="form-control text-center h5 mx-1 text-primary carBonus" value="0"/>
+					<button type="button" class="btn btn-outline-primary h5 carBonusAdd">+</button>
+				</div>
+				<div class="col">
+					<h4 class="ps-2">
+						{{ "characteristic.#{carKey[car-1]}"|trans }}
+					</h4>
+					<div class="position-relative me-4">
+						<div class="carCapDiv position-absolute d-flex flex-row justify-content-between">
+							<span class="carCap invisible rounded-circle bg-success"></span>
+							{% for i in 1..6 %}
+								<span data-carkey="{{ carKey[car - 1] }}" class="carCap carCap{{car}} rounded-circle"></span>
+							{% endfor %}
+						</div>
+						<div class="carProgressDiv progress">
+							<div class="carProgress progress-bar bg-warning" role="progressbar" style="width: 1.6%"></div>
+							<div class="carBonusProgress progress-bar bg-primary" role="progressbar" style="width: 0%"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+		{% endfor %}
+		<div class="px-3 pt-2 mt-2 h2">
+			<span id="carTotalPointText">190</span>
+			<span>{% trans %}characteristic.remaining{% endtrans %}</span>
+			<button id="carReset" class="btn btn-outline-danger btn-sm">Reset</button>
+		</div>
+	</div>
+
+
+	<ul class="nav nav-fill nav-pills navbar-light bg-dark mt-4">
+		<li class="nav-item">
+			<a class="nav-link buildTab active weaponTab" data-bs-toggle="tab" data-bs-target="#tab-weapon-1">
+				{% trans with {'%n%' : 1 }%}create.weapon{% endtrans %}
+			</a>
+		</li>
+		<li class="nav-item">
+			<a class="nav-link buildTab weaponTab" data-bs-toggle="tab" data-bs-target="#tab-weapon-2">
+				{% trans with {'%n%' : 2 }%}create.weapon{% endtrans %}
+			</a>
+		</li>
+	</ul>
+
+	<div class="tab-content p-2 p-lg-0">
+
+		{% for weapon in 1..2 %}
+
+			<div class="tab-pane mt-3 w-100 fade {% if weapon == 1 %}show active{% endif %}" id="tab-weapon-{{weapon}}">
+
+				<div class="row">
+
+					<div class="col-12 col-lg-3">
+						<select autocomplete="off" class="weaponSelect form-select my-2">
+							<option selected hidden value="0">
+								{% trans with {'%n%' : weapon }%}create.selectweapon{% endtrans %}</option>
+						</select>
+
+						<div class="text-center mt-4 d-none spinner{{weapon}}">
+							<div class="spinner-border"></div>
+						</div>
+
+						<div class="weaponSidebar d-none">
+
+
+							<div class="pointProgress progress position-relative mt-4">
+								<div class="pointProgressBar progress-bar" id="pointProgres-{{weapon}}" role="progressbar"></div>
+								<h5 class="pointProgressText text-center position-absolute w-100 mt-1">Points Restant : 15</h5>
+							</div>
+
+							<div class="row px-3 mt-4 justify-content-center" style="max-height:100px">
+								{% for cadre in 1..3 %}
+									<div class="col-1 col-lg-3 p-1">
+										<div class="dropdown">
+											<button class="activedSkillbtn position-relative btn dropdown-toggle w-100 p-0" id="activedSkillbtn-{{weapon}}-{{cadre}}" type="button" data-bs-toggle="dropdown">
+												<img id="activedSkillSelected-{{weapon}}-{{cadre}}" class="dropdown-item p-0 activedSkillSelected activedSkillSelected{{weapon}}" src="{{asset('/img/emptyCadre.png')}}" style="background-image: url('{{asset('/img/activedSkill.png')}}')" data-id="0"/>
+												<svg id="activedSkillDelete-{{weapon}}-{{cadre}}" class="activedSkillDelete" fill="#fff" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 123.05 123.05">
+													<path d="M121.325,10.925l-8.5-8.399c-2.3-2.3-6.1-2.3-8.5,0l-42.4,42.399L18.726,1.726c-2.301-2.301-6.101-2.301-8.5,0l-8.5,8.5c-2.301,2.3-2.301,6.1,0,8.5l43.1,43.1l-42.3,42.5c-2.3,2.3-2.3,6.1,0,8.5l8.5,8.5c2.3,2.3,6.1,2.3,8.5,0l42.399-42.4l42.4,42.4c2.3,2.3,6.1,2.3,8.5,0l8.5-8.5c2.3-2.3,2.3-6.1,0-8.5l-42.5-42.4l42.4-42.399C123.625,17.125,123.625,13.325,121.325,10.925z"/>
+												</svg>
+											</button>
+											<ul class="dropdown-menu p-0 activedSkillList activedSkillList{{weapon}}" aria-labelledby="activedSkillbtn-{{weapon}}-{{cadre}}">
+												{% for li in 1..6 %}
+													<li class="w-100">
+														<img id="activedSkill-{{weapon}}-{{cadre}}" class="activedSkill dropdown-item p-0" src="{{asset('/img/emptyCadre.png')}}" style="background-image: url('{{asset('/img/activedSkill.png')}}')" data-id="0" data-li="{{li}}" data-weapon="{{weapon}}"/>
+													</li>
+												{% endfor %}
+											</ul>
+										</div>
+									</div>
+								{% endfor %}
+							</div>
+
+							<div class="p-2 mt-4">
+								<button type="button" class="btn btn-outline-danger w-100 resetButton">{% trans %}create.reset{% endtrans %}</button>
+							</div>
+
+						</div>
+					</div>
+
+					<div class="col-12 col-lg-9 p-1">
+						<div class="text-center mt-4 d-none spinner{{weapon}}">
+							<div class="spinner-border"></div>
+						</div>
+						<div class="row pt-3 gx-0 skillSection d-none">
+							{% for side in 1..2 %}
+								<div class="col" id="side-{{side}}">
+									<h3 class="row mb-2 justify-content-center fw-bold branchName{{weapon}}"></h3>
+									<div class="position-relative">
+										<div class="row m-0 p-2 svgContainer svgContainer{{weapon}}">
+											<svg class="p-0 bgSvg" id="bgSvg-{{weapon}}-{{side}}"></svg>
+										</div>
+										<div class="row m-0 p-2">
+											{% for row in 1..6 %}
+												<div class="row gx-0">
+													{% for col in 1..5 %}
+														<div data-alert="0" class="col skill-container skill-container{{weapon}}" id="skill-{{weapon}}-{{side}}-{{row}}-{{col}}" data-id="0">
+															<div class="skill-container-icon">
+																<img class="w-100" src="{{asset("img/emptyCadre.png")}}"/>
+															</div>
+														</div>
+													{% endfor %}
+												</div>
+											{% endfor %}
+										</div>
+									</div>
+								</div>
+							{% endfor %}
+						</div>
+					</div>
+
+				</div>
+			</div>
+		{% endfor %}
+
+	</div>
+
+
+	{% if app.user %}
+		<div class="form-check mt-4 h5">
+			<input autocomplete="off" class="form-check-input" type="checkbox" id="visibilityCheck" 
+				{% if build is defined and build.private == true %}checked{% endif %}>
+			<span>
+			<label class="form-check-label" for="flexCheckChecked">
+				{% trans %}create.private{% endtrans %}
+			</label>
+			-
+			<span class="h6">{% trans %}create.visibility{% endtrans %}</span>
+			</span>
+		</div>
+	{% endif %}
+
+
+	<div class="mt-4">
+		<button type="button" id="formBuildSave" class="btn btn-outline-light w-100 d-none">
+			<span id="formBuildSaveLoader" class="spinner-border spinner-border d-none"></span>
+			<span class="h4">
+				{% trans %}create.save{% endtrans %}</button>
+			</span>
+	</div>
+
+{% endblock %}
